@@ -1,0 +1,37 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <title>Jack's IO Chatroom</title>
+  <link rel="stylesheet" type="text/css" href="./style.css"></link>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <div id="header">
+    <div id="unameDiv">
+      <input id="usernameInput" type="text" maxlength="14" placeholder="Username"/>
+      <button id="setButton">Set</button>
+    </div>
+    <div id="errors">
+      <p id="nameError">*That username is already taken!*</p>
+      <p id="nameError2">*That username is invalid!*</p>
+    </div>
+    <h3>Jack's Chatroom</h3>
+  </div>
+
+  <ul id="chatArea"></ul>
+
+  <div id="uInput">
+    <div id="userCount"></div>
+    <input id="messageInput" autocomplete="off"  placeholder="Type here..."/>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
+
