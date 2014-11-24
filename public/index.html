@@ -9,7 +9,10 @@
   <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-
+<!--Chatroom Page-->
+<ul id="pages">
+  <h3>Jack's Chatroom</h3>
+  <li id="chat" class="page">
   <div id="header">
     <div id="unameDiv">
       <input id="usernameInput" type="text" maxlength="14" placeholder="Username"/>
@@ -19,7 +22,6 @@
       <p id="nameError">*That username is already taken!*</p>
       <p id="nameError2">*That username is invalid!*</p>
     </div>
-    <h3>Jack's Chatroom</h3>
   </div>
 
   <ul id="chatArea"></ul>
@@ -28,7 +30,30 @@
     <div id="userCount"></div>
     <input id="messageInput" autocomplete="off"  placeholder="Type here..."/>
   </div>
+  </li>
+<!--Login Page-->
+  <li id="login" class="page">
+    <div id="loginBox">
+      <input id="loginUsername" class="loginField"type="text" maxlength="20" placeholder="Username"/>
+      <input id="loginPassword" class="loginField" type="password" placeholder="Password"/>
+      <button id="loginButton" class="loginButton">Login</button>
+      <button id="registerButton" class="loginButton">Register</button>
+    </div>
+  </li>
+<!--Registration Page-->
+  <li id="register" class="page">
+    <div id="registerBox">
+      <input id="registerName" type="text" placeholder="Full Name"/>
+      <input id="registerUsername" type="text" maxlength="20" placeholder="Username"/>
+      <p id="nameError">*That username is already taken!*</p>
+      <p id="nameError2">*That username is invalid!*</p>
+      <input id="registerPassword" type="password" placeholder="Password"/>
+      <input id="confirmPassword" type="password" placeholder="Confirm Password"/>
+      <button id="registerButton">Register!</button>
+    </div>
+  </li>  
 
+</ul>
   <script src="script.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>

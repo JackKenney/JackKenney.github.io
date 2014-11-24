@@ -113,7 +113,8 @@ socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) 
     }
   }
   var scroll = function() {
-    chatArea.scrollTop($('li').last().position().top + $('li').last().height()); //try this, may not work?
+    chatArea.scrollTop(chatArea[0].scrollHeight); //try this, may not work?
+    //$('#messages').scrollTop($('#messages')[0].scrollHeight);
   }
   var fade = function() {
     //make other parts of screen unfade

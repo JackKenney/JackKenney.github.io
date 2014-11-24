@@ -11,8 +11,11 @@ var express = require('express'),
     connection = mysql.createConnection('mysql://root:sqlroot123@localhost/chatroom_accounts');
 
 //server listens on port 1337
-server.listen(80);
-console.log("Server listening on port 80");
+var port = process.env.PORT || 1337;
+
+server.listen(port, function() {
+  console.log('Listening on ' + port);
+});
 
 //send page to address on req. to default directory
   app.use(express.static(__dirname + '/public'));

@@ -21,7 +21,7 @@ h3 {
   padding: 0px;
 }
 .page {
-  display: block;
+  display: none;
   width: 100%;
   margin: 0px;
   padding: 0px;
@@ -29,19 +29,8 @@ h3 {
 
 /* Chat Page */
 #chat {
+  display: none;
   max-width: 1030px;
-}
-#chatArea {
-  min-height: 50px;
-  width: 100%;
-  max-width: 1030px;
-  top: 71px;
-  bottom: 61px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: fixed;
-  clear: both;
-  margin: 4px auto;
 }
 #header {
   height: 50px;
@@ -89,6 +78,17 @@ h3 {
   color: red;
   margin-left: 5px;
   display: none;
+}
+#chatArea {
+  min-height: 50px;
+  width: 100%;
+  top: 71px;
+  bottom: 61px;
+  overflow-y: scroll;
+  overflow-x: hidden; 
+  position: fixed;
+  clear: both;
+  margin: 16px 0px 7px 0px;
 }
 .page li {
   width: auto;
@@ -191,29 +191,16 @@ h3 {
 #login {
   display: block;
   background-color: brown;
-  width: 170px;
-  margin: 15px auto;
+  width: 100%;
 }
 #loginBox {
-  padding: 10px;
-  margin: auto;
+
 }
 .loginField {
   height: 30px;
-  width: 150px;
   border-radius: 5px;
   display: block;
-  margin: 0px auto 4px auto;
-  padding: 5px;
-  font-family: serif;
-  font-size: 110%;
-}
-.loginButton {
-  height: 25px;
-  width: 73px;
-  border-radius: 5px;
-  display: inline-block;
-  padding 5px;
+  margin: 10px;
 }
 
 /* Registration Page */
