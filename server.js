@@ -5,7 +5,11 @@ var express = require('express'),
     app = express(),
     server = require( 'http' ).createServer( app ),
 //sockets
-    io = require('socket.io').listen(server);
+    io = require('socket.io').listen(server),
+// database
+    mysql = require( 'mysql' ),
+    connection = mysql.createConnection('mysql://root:sqlroot123@localhost/chatroom_accounts');
+
 //server listens on port 1337
 server.listen(80);
 console.log("Server listening on port 80");
@@ -19,6 +23,9 @@ console.log("Server listening on port 80");
 var numUsers = 0,
     users = {};
 
+//connect to database
+connection.connect();
+console.log('Database Connection Established!');
 
 //  Sockets
 
