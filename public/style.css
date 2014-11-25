@@ -3,6 +3,7 @@
 * {
   box-sizing: border-box;
   border: none;
+  background-color: burlywood;
 }
 body {
   margin: 10px auto;
@@ -30,6 +31,7 @@ h3 {
 /* Chat Page */
 #chat {
   max-width: 1030px;
+  display: none;
 }
 #chatArea {
   min-height: 50px;
@@ -42,6 +44,7 @@ h3 {
   position: fixed;
   clear: both;
   margin: 4px auto;
+  background-color: white;
 }
 #header {
   height: 50px;
@@ -60,14 +63,14 @@ h3 {
   margin: 0px -6px;
   height: 29px;
 }
-.glow {
+/*.glow {
   -moz-box-shadow: 0 0 35px burlywood;
   -webkit-box-shadow: 0 0 35px burlywood;
   box-shadow: 0px 0px 35px burlywood;
   background-color: burlywood;
   border: 1px solid burlywood;
   border-radius: 4px;
-}
+}*/
 #usernameInput {
   border: 1px solid brown;
   padding: 6px;
@@ -190,7 +193,6 @@ h3 {
 /* Login Page */
 #login {
   display: block;
-  background-color: brown;
   width: 170px;
   margin: 15px auto;
 }
@@ -198,7 +200,7 @@ h3 {
   padding: 10px;
   margin: auto;
 }
-.loginField {
+.field { /* Applies to both Login and Register Pages */
   height: 30px;
   width: 150px;
   border-radius: 5px;
@@ -207,6 +209,7 @@ h3 {
   padding: 5px;
   font-family: serif;
   font-size: 110%;
+  background-color: white;
 }
 .loginButton {
   height: 25px;
@@ -214,12 +217,21 @@ h3 {
   border-radius: 5px;
   display: inline-block;
   padding 5px;
+  margin: 0px auto 4px auto;
+  background-color: steelblue;
+  color: aliceblue;
+  font-family: serif;
+  font-size: 100%;
 }
 
 /* Registration Page */
 #register {
   display: none;
-  background-color: burlywood;
+  width: 170px;
+  margin: 15px auto;
 }
-
+#registerBox {
+  padding: 10px;
+  margin: auto;
+}
 

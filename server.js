@@ -51,6 +51,10 @@ io.on('connection', function(socket) {
       console.log('bad username input');
     }
   });
+  socket.on('register', function(data) {  //{ username, firstname, lastname, email, password }
+    //query sql string to database and add user as long as username is not taken -> if username is taken, emit a "type" back that shows that username is taken and display the error response accordingly.  
+
+  });
   
   socket.on('setUsername', function(data) { //{ original:username, submit:un }; 
 

@@ -10,7 +10,7 @@ var numUsers,
     username = '',
     loggedIn = false,
     lastName = '',
-    connected
+    connected = false,
     userCount = $(document.getElementById('userCount')),
     chatArea = $(document.getElementById('chatArea')),
     messageInput = $(document.getElementById('messageInput')),

@@ -10,50 +10,52 @@
 </head>
 <body>
 <!--Chatroom Page-->
-<ul id="pages">
+<div id="pages">
   <h3>Jack's Chatroom</h3>
-  <li id="chat" class="page">
-  <div id="header">
-    <div id="unameDiv">
-      <input id="usernameInput" type="text" maxlength="14" placeholder="Username"/>
-      <button id="setButton">Set</button>
+  <div id="chat" class="page">
+    <div id="header">
+      <div id="unameDiv">
+        <input id="usernameInput" type="text" maxlength="14" placeholder="Username"/>
+        <button id="setButton">Set</button>
+      </div>
+       <div id="errors">
+        <p id="nameError">*That username is already taken!*</p>
+        <p id="nameError2">*That username is invalid!*</p>
+      </div>
     </div>
-    <div id="errors">
-      <p id="nameError">*That username is already taken!*</p>
-      <p id="nameError2">*That username is invalid!*</p>
+  
+    <ul id="chatArea"></ul>
+  
+    <div id="uInput">
+      <div id="userCount"></div>
+      <input id="messageInput" autocomplete="off"  placeholder="Type here..."/>
     </div>
   </div>
-
-  <ul id="chatArea"></ul>
-
-  <div id="uInput">
-    <div id="userCount"></div>
-    <input id="messageInput" autocomplete="off"  placeholder="Type here..."/>
-  </div>
-  </li>
 <!--Login Page-->
-  <li id="login" class="page">
+  <div id="login" class="page">
     <div id="loginBox">
-      <input id="loginUsername" class="loginField"type="text" maxlength="20" placeholder="Username"/>
-      <input id="loginPassword" class="loginField" type="password" placeholder="Password"/>
+      <input id="loginUsername" class="field"type="text" maxlength="20" placeholder="Username"/>
+      <input id="loginPassword" class="field" type="password" placeholder="Password"/>
       <button id="loginButton" class="loginButton">Login</button>
-      <button id="registerButton" class="loginButton">Register</button>
+      <button id="regLinkButton" class="loginButton">Register</button>
     </div>
-  </li>
+  </div>
 <!--Registration Page-->
-  <li id="register" class="page">
+  <div id="register" class="page">
     <div id="registerBox">
-      <input id="registerName" type="text" placeholder="Full Name"/>
-      <input id="registerUsername" type="text" maxlength="20" placeholder="Username"/>
+      <input id="regFirstName" class="field" type="text" placeholder="First Name"/>
+      <input id="regLastName" class="field" type="text" placeholder="Last Name"/>
+      <input id="registerUsername" class="field" type="text" maxlength="20" placeholder="Username"/>
       <p id="nameError">*That username is already taken!*</p>
       <p id="nameError2">*That username is invalid!*</p>
-      <input id="registerPassword" type="password" placeholder="Password"/>
-      <input id="confirmPassword" type="password" placeholder="Confirm Password"/>
-      <button id="registerButton">Register!</button>
+      <input id="registerPassword" class="field" type="password" placeholder="Password"/>
+      <input id="confirmPassword" class="field" type="password" placeholder="Confirm Password"/>
+      <button id="loginLinkButton" class="loginButton">Back</button>
+      <button id="registerButton" class="loginButton">Register!</button>
     </div>
-  </li>  
+  </div>  
 
-</ul>
+</div>
   <script src="script.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
