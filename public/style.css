@@ -17,6 +17,11 @@ h3 {
   line-height: 20px;
   margin: 0px;
 }
+.err {
+  color: brown;
+  display: none;
+  text-align: center;
+}
 #pages {
   margin: 0px;
   padding: 0px;
@@ -32,6 +37,13 @@ h3 {
 #chat {
   max-width: 1030px;
   display: none;
+  border-radius: 5px;
+}
+#logout {
+  text-align: right;
+  float: right;
+}
+#logoutLink {
 }
 #chatArea {
   min-height: 50px;
@@ -39,59 +51,30 @@ h3 {
   max-width: 1030px;
   top: 71px;
   bottom: 61px;
+  padding: 5px 0px 2px 0px;
   overflow-y: scroll;
   overflow-x: hidden;
   position: fixed;
   clear: both;
   margin: 4px auto;
   background-color: white;
+  -moz-box-shadow: 0 0 25px white;
+  -webkit-box-shadow: 0 0 25px white;
+  box-shadow: 0px 0px 25px white;
 }
-#header {
-  height: 50px;
-}
-#unameDiv {
-  width: 187px;
-  height: 30px;
-  display: inline-block;
-}
-#setButton {
-  background-color: brown;
-  color: burlywood; 
-  padding: 6px;
-  border-radius: 3px;
-  width: 35px;
-  margin: 0px -6px;
-  height: 29px;
-}
-/*.glow {
-  -moz-box-shadow: 0 0 35px burlywood;
-  -webkit-box-shadow: 0 0 35px burlywood;
-  box-shadow: 0px 0px 35px burlywood;
-  background-color: burlywood;
-  border: 1px solid burlywood;
-  border-radius: 4px;
-}*/
-#usernameInput {
-  border: 1px solid brown;
-  padding: 6px;
-  border-radius: 3px;
-  width: 152px;
-  height: 29px;
-  margin-right: 0px;
-}
-#errors {
-  display: inline-block;
-  height: 30px;
-}
-#nameError {
-  color: red;
-  margin-left: 5px;
-  display: none;
-}
-#nameError2 {
-  color: red;
-  margin-left: 5px;
-  display: none;
+#uInput {
+  width: 100%;
+  max-width: 1030px;
+  font-size: 120%;
+  position: fixed;
+  bottom: 0;
+  display: block;
+  margin-top: 4px;
+  border: 2px solid white;
+  background-color: white;
+  -moz-box-shadow: 0 0 25px white;
+  -webkit-box-shadow: 0 0 25px white;
+  box-shadow: 0px 0px 25px white;
 }
 .page li {
   width: auto;
@@ -103,6 +86,7 @@ h3 {
 }
 .name {
   color: gray;
+  background-color: inherit;
   margin-top: inherit;
 }
 .my {
@@ -116,6 +100,7 @@ h3 {
 .log {
   text-align: center;
   color: gray;
+  background-color: inherit;
   margin-left: -10px;
 }
 .message {
@@ -124,6 +109,7 @@ h3 {
   padding: 4px 6px;
   font-size: 105%;
   margin: 0px 20px;
+  background-color: inherit;
 }
 .otherMessages {
   float: left;
@@ -140,17 +126,6 @@ h3 {
   margin-right: 20px;
 }
 
-
-#uInput {
-  width: 100%;
-  font-size: 120%;
-  position: fixed;
-  bottom: 0;
-  display: block;
-  margin-top: 4px;
-  border: 2px solid white;
-  background-color: #fff;
-}
 #userCount {
   float: left;
   width: 10%;
@@ -177,18 +152,8 @@ h3 {
   text-align: left;
   font-family: serif;
   font-size: 120%;
-  
+  background-color: white;
 }
-/*#sendButton {
-  width: 10%;
-  height: 30px;
-  float: right;
-  background-color: #FF9966;
-  font-size: 110%;
-  font-family: serif;
-  border-radius: 3px;
-}*/
-
 
 /* Login Page */
 #login {
@@ -198,7 +163,8 @@ h3 {
 }
 #loginBox {
   padding: 10px;
-  margin: auto;
+  margin: auto 0px auto auto;
+  display: block;
 }
 .field { /* Applies to both Login and Register Pages */
   height: 30px;

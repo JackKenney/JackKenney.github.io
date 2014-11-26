@@ -6,15 +6,18 @@ console.log(socket);
 
 $(document).ready( function() {
 //global client variables
-var numUsers,
+var numUsers = -1,
     username = '',
+    fullname = '',
     loggedIn = false,
-    lastName = '',
+    latestName = '',
     connected = false,
+    loginPage = $(document.getElementById('login')),
+    regPage = $(document.getElementById('register')),
+    chatPage = $(document.getElementById('chat')),
     userCount = $(document.getElementById('userCount')),
     chatArea = $(document.getElementById('chatArea')),
     messageInput = $(document.getElementById('messageInput')),
-    usernameInput = $(document.getElementById('usernameInput')),
     isMobile = false;
 // Mobile accomodations:
 	
@@ -33,7 +36,7 @@ socket.on('connected', function(data) { //{ 'numUsers':numUsers }
   console.log('connected');
   updateUC(data.numUsers);
   connected = true;
-  log({ message:"Welcome! Please login", type:3 } );
+  log({ message:"Welcome!", type:3 } );
 });
 
 //any incoming system message (login,logout,namechange)
@@ -64,42 +67,27 @@ socket.on('otherMessage', function(data) { //{ username, message }
 });
 
 //server response to login request
-socket.on('loginResponse', function(data) { //{ username, type(boolean), numUsers }
-  console.log('loginResponse');
-  if(data.type) {
-    //olelcome user X to chatroom and set username variable to data.username
-    //log system message welcome!
-    username = data.username; //setting global var
-    console.log(data.username);
-    log({ message:("Welcome to the Chatroom, " + username + "!"), type:3 });
+socket.on('loginResponse', function(data) { //{ results(object), type, numUsers }
+  console.log('loginResponse'); //type 1 = conf, 2 = uname not found || passwords don't match
+  if(data.type == 1) {
+    console.log('type 1');
+    updateUC(numUsers);
+    username = data.results.username;
+    console.log(username);
+    fullname = data.results.firstname + " " + data.results.lastname;
     loggedIn = true;
-    updateUC(data.numUsers);
-    console.log(numUsers);
-    //add a change to 'placeholder' to make it the username
-    usernameInput.attr('placeholder', data.username.toString()).val("");
-    messageInput.focus();
-    unfade();
+    loginPage.css('display','none');
+    chatPage.css('display','block');
+    var fullnametext = document.createTextNode(fullname);
+    $('#logout').prepend(fullnametext);
   }
   else {
-    showError();
+    console.log('type2');
+    $('#loginError').css('display','block');
   }
+  $('#loginPassword').val('');
 });
-socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) }
-  console.log('nameChangeRes');
-  if(data.type) {
-    username = data.submit; //setting global var
-    console.log(data.submit);
-    log({ message:("You've successfully changed your name from " + data.original + " to " + data.submit + '!'), type:3 });
 
-    //add a change to 'placeholder' to make it the username
-    usernameInput.attr('placeholder', data.submit.toString()).val("");
-    messageInput.focus();
-  }
-  else {
-    showError();
-  }
-
-}); 
 //:End handlers for server emissions
 
 // Necessary functions:
@@ -115,14 +103,6 @@ socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) 
   var scroll = function() {
     chatArea.scrollTop(chatArea[0].scrollHeight); //try this, may not work?
     //$('#messages').scrollTop($('#messages')[0].scrollHeight);
-  }
-  var fade = function() {
-    //make other parts of screen unfade
-    chatArea.css('opacity','0.5');
-    $('#uInput').css('opacity','0.5');
-
-    //make set button and input glow
-    $('#unameDiv').addClass('glow');
   }
   var unfade = function() {
     //make other parts of screen unfade
@@ -143,14 +123,14 @@ socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) 
           mText = $(document.createTextNode(data.message)),
           br = document.createElement('br');
 
-      if(lastName!==username) {
+      if(latestName!==username) {
         var name = $(document.createElement('li')),
-            nText = $(document.createTextNode(username));
+            nText = $(document.createTextNode(fullname));
         name.addClass('name my');
         name.append(nText);
         chatArea.append(name);
         chatArea.append(br);
-        lastName = username;
+        latestName = username;
       }
       mess.addClass('myMessages message');
       mess.append(mText);
@@ -163,14 +143,14 @@ socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) 
           mText = $(document.createTextNode(data.message)),
           br = document.createElement('br');
 
-      if(lastName!==data.username) {
+      if(latestName!==data.username) {
         name = $(document.createElement('li'));
-        nText = $(document.createTextNode(data.username));
+        nText = $(document.createTextNode(data.fullname));
         name.addClass('name other');
         name.append(nText);
         chatArea.append(name);
         chatArea.append(br);
-        lastName = data.username;
+        latestName = data.username;
       }
       mess.addClass('otherMessages message');
       chatArea.append(mess);
@@ -186,12 +166,10 @@ socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) 
       chatArea.append(mess);
       mess.append(mText);
       chatArea.append(br);
-      lastName = '';
+      latestName = '';
     }
     scroll();
   } //end of log function
-
-
   var cleanUsername = function(input) {  //returns boolean
     var result = $('<div/>').text(input).html() || input;
     if(result.indexOf(' ') !== -1) {
@@ -200,93 +178,111 @@ socket.on('nameChangeRes', function(data) { //{ original, submit, type(boolean) 
     else return result.toString();
   }
   var hideErrors = function() {
-    $('#nameError').css('display','none');
-    $('#nameError2').css('display','none');
+    $('#loginError').css('display','none');
+    $('#regFieldError').css('display','none');
+    $('#regTakenError').css('display','none');
+    $('#regPassError').css('display','none');
   }
-
-if(loggedIn===false) {
-  fade();
-
-  $('#setButton').on('click', function () {
-    var unInput = usernameInput.val().trim();
-    un = cleanUsername(unInput);
-    if(un) {
-      socket.emit('login',{ username:un } );
-      hideErrors();
-      console.log("good " + un);
+  var registerCheck = function() {
+    hideErrors();
+    var username = $('#regUsername').val().trim(),
+        firstname = $('#regFirstName').val().trim(),
+        lastname = $('#regLastName').val().trim(),
+        email = $('#regEmail').val().trim(),
+        password = CryptoJS.SHA256($('#regPassword').val().trim()).toString(),
+        confPassword = CryptoJS.SHA256($('#confPassword').val().trim()).toString();
+    $('#regPassword').val('');
+    $('#confPassword').val('');
+    console.log(password);
+    if (
+       firstname == "" ||
+       lastname == "" ||
+       username == "" ||
+       email == "" ||
+       password == "" ||
+       confPassword == "" ||
+       !cleanUsername(username)
+    ) { $('#regFieldError').css('display','block'); }
+    else if ( password !== confPassword ) {
+      $('#regPassError').css('display','block');
     }
     else {
-      $('#nameError2').css('display','inline-block');
-      console.log("bad " + un);
+      socket.emit('register', { 'username':username, 'firstname':firstname, 'lastname':lastname, 'email':email, 'password':password } );
     }
-  });
-}
-else {
-  unfade();
-  $('#setButton').on('click', function () {
-    var unInput = usernameInput.val().trim();
-    un = cleanUsername(unInput);
-    if(un) {
-      socket.emit('setUsername',{  original:username, submit:un } );
-      hideErrors();
-      console.log("good " + un);
+  }
+  var loginCheck = function() {
+    hideErrors();
+    var username = $('#loginUsername').val().trim(),
+        password = CryptoJS.SHA256($('#loginPassword').val().trim()).toString();
+    console.log(password);
+    $('#loginPassword').val("");
+    if( username !== "" && password !== "" ) {
+      socket.emit('login', { 'username':username, 'password':password });
     }
     else {
-      $('#nameError2').css('display','inline-block');
-      console.log("bad " + un);
+      $('#loginError').css('display','block');
     }
-  });
-
-}
-  //add funcitonality for typing (enter, hover, enter on setButton(maybe somewhere else)
-  $(window).keydown(function (event) {
-    // When the client hits ENTER on their keyboard
-    if(usernameInput.is(":focus")){
-      if (event.which === 13) {
-        var unInput = usernameInput.val().trim();
-        un = cleanUsername(unInput);
-        if(un) {
-          if(loggedIn) {
-            console.log('\'setUsername\'');
-            socket.emit('setUsername',{  original:username, submit:un } );
-          }
-          else {
-            console.log('\'login\'');
-            socket.emit('login',{ username:un });
-          }
-          console.log("good " + un);
-          hideErrors();
-        }
-        else {
-          $('#nameError2').css('display','inline-block');
-          console.log("bad " + un);
-        }
-      }
-    }
-    if(loggedIn && messageInput.is(":focus") && messageInput.val()!=="") {
-      if (event.which === 13) {
-        sendMessage();
-      }
-    }
-  });
- 
-  //sendmessage function
+  }
   var sendMessage = function() {
     var mess = messageInput.val().trim();
     //may need clean message input?
     log({ message:mess, type:1 });
-    socket.emit('newMessage', { 'username':username, message:mess });
+    socket.emit('newMessage', { 'username':username, 'fullname':fullname, message:mess });
     messageInput.val("");
   }
+
+// :End Necessary Functions
+
+// Page Functionality:
+  $(window).keydown(function (event) {
+    if(loginPage.css('display')==='block'){
+      if (event.which === 13) {
+        loginCheck();
+      }
+    }
+    else if(chatPage.css('display')==='block' && loggedIn && messageInput.is(":focus") && messageInput.val()!=="") {
+      if (event.which === 13) {
+        sendMessage();
+      }
+    }
+    else if(regPage.css('display')==='block') {
+      if (event.which === 13) {
+        registerCheck();
+      }
+    }
+  });
 
   messageInput.click(function () {
     messageInput.focus();
   });
-  usernameInput.click(function () {
-    usernameInput.focus();
-  });
   chatArea.click(function() {
     messageInput.focus();
   });
+  $('#regLinkButton').click(function() {
+    loginPage.css('display','none');
+    regPage.css('display','block');
+  });
+  $('#loginLinkButton').click(function() {
+    regPage.css('display','none');
+    loginPage.css('display','block');
+  });
+  $('#loginButton').click(function() {
+    loginCheck();
+  });
+  $('#regButton').click(function() {
+    registerCheck();
+  });
+  $('#logoutLink').click(function() {
+    chatPage.css('display','none');
+    loginPage.css('display','block');
+    var first = document.createTextNode(", "),
+        last = document.createTextNode('?');
+    var a = $(document.createElement('a')),
+        atext = document.createTextNode('logout');
+    a.append(atext);
+    $('#logout').empty().prepend(first).append(a).append(last);
+  });
+
+// :End Page Functionality
 
 }); //end document ready

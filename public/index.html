@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="./style.css"></link>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
@@ -13,17 +14,7 @@
 <div id="pages">
   <h3>Jack's Chatroom</h3>
   <div id="chat" class="page">
-    <div id="header">
-      <div id="unameDiv">
-        <input id="usernameInput" type="text" maxlength="14" placeholder="Username"/>
-        <button id="setButton">Set</button>
-      </div>
-       <div id="errors">
-        <p id="nameError">*That username is already taken!*</p>
-        <p id="nameError2">*That username is invalid!*</p>
-      </div>
-    </div>
-  
+    <p id="logout">, <a id="logoutLink">logout</a>?</p> <!-- Prepend the "Logged in as (username/fullname)" to $('#logout')-->
     <ul id="chatArea"></ul>
   
     <div id="uInput">
@@ -34,24 +25,27 @@
 <!--Login Page-->
   <div id="login" class="page">
     <div id="loginBox">
-      <input id="loginUsername" class="field"type="text" maxlength="20" placeholder="Username"/>
-      <input id="loginPassword" class="field" type="password" placeholder="Password"/>
+      <input id="loginUsername" class="field"type="text" maxlength="25" placeholder="Username"/>
+      <input id="loginPassword" class="field" type="password" maxlength="25" placeholder="Password"/>
       <button id="loginButton" class="loginButton">Login</button>
       <button id="regLinkButton" class="loginButton">Register</button>
     </div>
+    <p id="loginError" class="err">*Username or password is incorrect*</p>
   </div>
 <!--Registration Page-->
   <div id="register" class="page">
     <div id="registerBox">
-      <input id="regFirstName" class="field" type="text" placeholder="First Name"/>
-      <input id="regLastName" class="field" type="text" placeholder="Last Name"/>
-      <input id="registerUsername" class="field" type="text" maxlength="20" placeholder="Username"/>
-      <p id="nameError">*That username is already taken!*</p>
-      <p id="nameError2">*That username is invalid!*</p>
-      <input id="registerPassword" class="field" type="password" placeholder="Password"/>
-      <input id="confirmPassword" class="field" type="password" placeholder="Confirm Password"/>
+      <input id="regFirstName" class="field" type="text" maxlength="25" placeholder="First Name"/>
+      <input id="regLastName" class="field" type="text" maxlength="50" placeholder="Last Name"/>
+      <input id="regUsername" class="field" type="text" maxlength="25" placeholder="Username"/>
+      <input id="regEmail" class="field" type="text" maxlength="100" placeholder="Email"/>
+      <input id="regPassword" class="field" type="password" maxlength="25" placeholder="Password"/>
+      <input id="confPassword" class="field" type="password" maxlength="25" placeholder="Confirm Password"/>
       <button id="loginLinkButton" class="loginButton">Back</button>
-      <button id="registerButton" class="loginButton">Register!</button>
+      <button id="regButton" class="loginButton">Register!</button>
+      <p id="regFieldError" class="err">*Incomplete or invalid fields*</p>
+      <p id-="regPassError" class="err">*Passwords don't match*</p>
+      <p id="regTakenError" class="err">*That username is already taken!*</p>
     </div>
   </div>  
 

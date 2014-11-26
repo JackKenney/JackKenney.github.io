@@ -23,8 +23,7 @@ server.listen(port, function() {
 
 // Chatroom:
 //  Variables
-var numUsers = 0,
-    users = {};
+var numUsers = 0; //number of users currently logged in!
 
 //connect to database
 connection.connect();
@@ -36,45 +35,61 @@ io.on('connection', function(socket) {
   socket.emit('connected', { 'numUsers':numUsers } );
   socket.loggedIn = false;
 
-  socket.on('login', function(data) {  // { username:un }
-    console.log('\'login\'');
-    if(setUsername(data.original, data.username)) {
-      numUsers++;
-      socket.loggedIn = true;
-      socket.username = data.username;
-      console.log(socket.username + '\n' + numUsers);
-      socket.emit('loginResponse', { username:data.username, type:true, numUsers:numUsers });
-      socket.broadcast.emit('sysMessage', { username:data.username, type:1, numUsers:numUsers });
-    }
-    else {
-      socket.emit('loginResponse', { type:false });
-      console.log('bad username input');
-    }
+  socket.on('login', function(data) { // {  'username':username, 'password':password }
+    var sql = "SELECT * FROM users WHERE users.username = \"" + data.username + "\";";
+    console.log(sql);
+    connection.query(sql, function(err,results) {
+      console.log(results);
+      results = results[0];
+      console.log(results);
+      console.log(results.password);
+      console.log(data.password);
+      if(err) console.log(err);
+      else {
+        if(results === undefined || results.password !== data.password) {
+           socket.emit('loginResponse', { type:2 }); //type 2 = uname not found
+        }
+        else {
+          socket.emit('loginResponse', { 'results':results, type:1 }); //type 1 = login confirmed
+          numUsers++;
+          socket.loggedIn = true;
+          socket.username = data.username;
+        }
+      } 
+    });  
   });
+
   socket.on('register', function(data) {  //{ username, firstname, lastname, email, password }
     //query sql string to database and add user as long as username is not taken -> if username is taken, emit a "type" back that shows that username is taken and display the error response accordingly.  
+    var sql = "INSERT INTO users (username,firstname,lastname,email,password) VALUES(";
+    sql += "\""+data.username+"\",";
+    sql += "\""+data.firstname+"\",";
+    sql += "\""+data.lastname+"\",";
+    sql += "\""+data.email+"\",";
+    sql += "\""+data.password+"\");";
+    console.log(sql);
 
+    var sql2 = "SELECT * FROM users WHERE users.username = \"" + data.username + "\"";
+    connection.query(sql2, function(err,results) {
+      if(err) console.log("sql err");
+      else {
+        if(results.username !== data.username) {
+          connection.query(sql, function(err,results) {
+            results = results[0];
+            console.log(results);
+            socket.emit('registerResponse',{ "results":results, type:1, "numUsers":numUsers }); //type 1 = successful registration
+          });
+        }
+        else {
+          socket.emit('registerResponse',{ type:2 }); //type 2 = username taken
+        }
+      }
+    });
   });
-  
-  socket.on('setUsername', function(data) { //{ original:username, submit:un }; 
 
-    console.log('\'setUsername\'');
-    if(setUsername(data.original, data.submit)) { //if un isn't taken
-      console.log(data.original + " changed their name to " + data.submit);
-      socket.username = data.submit;
-      users[data.submit] = data.submit;
-      delete users[data.original];
-      socket.broadcast.emit('sysMessage',{ username:data.original, type:3, 'numUsers':numUsers, submit:data.submit });
-      socket.emit('nameChangeRes', { original:data.original, submit:data.submit, type:true });
-      
-    }
-    else { socket.emit('nameChangeRes', { type:false }); }
-
-  });
-
-  socket.on('newMessage', function(data) { //{ username, message }
+  socket.on('newMessage', function(data) { //{ username, fullname, message }
     console.log('\'newMessage\'' + '\n' + socket.username);
-    socket.broadcast.emit('otherMessage', { username:socket.username, message:data.message } );
+    socket.broadcast.emit('otherMessage', { username:socket.username, fullname:data.fullname, message:data.message } );
   });
 
   socket.on('disconnect', function() {  //{ username }
@@ -83,8 +98,7 @@ io.on('connection', function(socket) {
     console.log('\'disconnect\'');
     if(socket.loggedIn) {
       numUsers--;
-      delete users[socket.username];
-      console.log(socket.username + " has disconnected\n" + users);
+      console.log(socket.username + " has disconnected");
       socket.broadcast.emit('sysMessage',{ 
         'username':socket.username,
          'type':2,
@@ -92,23 +106,9 @@ io.on('connection', function(socket) {
       });
     }
     else {
-      delete users[socket.username];
       socket.username = undefined;
       console.log("someone refreshed");
     }
   });
-  
-  var setUsername = function(original, submit) { //return a boolean then submit username
-    if(users[submit]===undefined) {
-      users[submit] = submit;
-      users[original] = undefined;
-      user = users[submit];
-      console.log(users);
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-  
+
 });
