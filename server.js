@@ -42,8 +42,6 @@ io.on('connection', function(socket) {
       console.log(results);
       results = results[0];
       console.log(results);
-      console.log(results.password);
-      console.log(data.password);
       if(err) console.log(err);
       else {
         if(results === undefined || results.password !== data.password) {
@@ -74,10 +72,8 @@ io.on('connection', function(socket) {
       if(err) console.log("sql err");
       else {
         if(results.username !== data.username) {
-          connection.query(sql, function(err,results) {
-            results = results[0];
-            console.log(results);
-            socket.emit('registerResponse',{ "results":results, type:1, "numUsers":numUsers }); //type 1 = successful registration
+          connection.query(sql, function(err) {
+            socket.emit('registerResponse',{ "firstname":data.firstname, type:1, "numUsers":numUsers }); //type 1 = successful registration
           });
         }
         else {

@@ -8,7 +8,10 @@ $(document).ready( function() {
 //global client variables
 var numUsers = -1,
     username = '',
+    firstname = '',
+    lastname = '',
     fullname = '',
+    email = '',
     loggedIn = false,
     latestName = '',
     connected = false,
@@ -73,8 +76,10 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
     console.log('type 1');
     updateUC(numUsers);
     username = data.results.username;
-    console.log(username);
+    firstname = data.results.firstname;
+    lastname = data.results.lastname;
     fullname = data.results.firstname + " " + data.results.lastname;
+    email = data.results.email;
     loggedIn = true;
     loginPage.css('display','none');
     chatPage.css('display','block');
@@ -86,6 +91,22 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
     $('#loginError').css('display','block');
   }
   $('#loginPassword').val('');
+});
+
+//server response to registration
+socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
+  console.log('registerResponse');
+  if(data.type === 1) {
+    regPage.css('display','none');
+    loginPage.css('display','block');
+    var w = $(document.createElement('h4')),
+        t = $(document.createTextNode('Welcome, ' + data.firstname + '!'));
+    w.append(t);
+    loginPage.prepend(w);
+  }
+  else {
+    $('#regTakenError').css('display','block');
+  }
 });
 
 //:End handlers for server emissions
@@ -201,7 +222,8 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
        email == "" ||
        password == "" ||
        confPassword == "" ||
-       !cleanUsername(username)
+       !cleanUsername(username) ||
+       email.indexOf('@') === -1
     ) { $('#regFieldError').css('display','block'); }
     else if ( password !== confPassword ) {
       $('#regPassError').css('display','block');
