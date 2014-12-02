@@ -61,10 +61,10 @@ socket.on('sysMessage', function(data) { //{ username, type, [numUsers], [submit
 });
 
 //any incoming message from another user
-socket.on('otherMessage', function(data) { //{ username, message }
+socket.on('otherMessage', function(data) { //{ username, message, fullname }
   console.log('otherMessage');
   if(data.username!==username) {
-    log({ message:data.message, type:2, username:data.username });
+    log({ message:data.message, type:2, username:data.username, fullname:data.fullname });
     console.log("someone else's message added");
   }
 });
@@ -136,8 +136,8 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
   var showError = function() {
     $('#nameError').css('display','inline-block');
   }
-  var log = function(data) { //data is { message, [type], [user] }
-
+  var log = function(data) { //data is { message, [type], [user], [fullname] }
+    console.log(data);
     // a message from me
     if (data.type===1) {
       var mess = $(document.createElement('li')),
@@ -251,6 +251,7 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
     log({ message:mess, type:1 });
     socket.emit('newMessage', { 'username':username, 'fullname':fullname, message:mess });
     messageInput.val("");
+    console.log(username + ' ' + fullname + ' ' + mess);
   }
 
 // :End Necessary Functions

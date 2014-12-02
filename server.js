@@ -52,6 +52,7 @@ io.on('connection', function(socket) {
           numUsers++;
           socket.loggedIn = true;
           socket.username = data.username;
+          socket.fullname = results.firstname + ' ' + results.lastname;
         }
       } 
     });  
@@ -85,7 +86,7 @@ io.on('connection', function(socket) {
 
   socket.on('newMessage', function(data) { //{ username, fullname, message }
     console.log('\'newMessage\'' + '\n' + socket.username);
-    socket.broadcast.emit('otherMessage', { username:socket.username, fullname:data.fullname, message:data.message } );
+    socket.broadcast.emit('otherMessage', { username:socket.username, fullname:socket.fullname, message:data.message } );
   });
 
   socket.on('disconnect', function() {  //{ username }
