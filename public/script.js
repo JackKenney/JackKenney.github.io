@@ -67,6 +67,10 @@ socket.on('otherMessage', function(data) { //{ username, message, fullname }
     log({ message:data.message, type:2, username:data.username, fullname:data.fullname });
     console.log("someone else's message added");
   }
+  else {
+    log({ message:data.message, type:1 });
+    console.log("my message added");
+  }
 });
 
 //server response to login request
@@ -248,8 +252,8 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
   var sendMessage = function() {
     var mess = messageInput.val().trim();
     //may need clean message input?
-    log({ message:mess, type:1 });
     socket.emit('newMessage', { 'username':username, 'fullname':fullname, message:mess });
+    log( {message:mess, type:1 } );
     messageInput.val("");
     console.log(username + ' ' + fullname + ' ' + mess);
   }
