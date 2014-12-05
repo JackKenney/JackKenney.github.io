@@ -23,7 +23,8 @@ server.listen(port, function() {
 
 // Chatroom:
 //  Variables
-var numUsers = 0; //number of users currently logged in!
+var numUsers = 0, //number of users currently logged in!
+    guests = {};
 
 //connect to database
 connection.connect();
@@ -34,8 +35,9 @@ console.log('Database Connection Established!');
 io.on('connection', function(socket) {
   socket.emit('connected', { 'numUsers':numUsers } );
   socket.loggedIn = false;
+  socket.guest = false;
 
-  socket.on('login', function(data) { // {  'username':username, 'password':password }
+  socket.on('login', function(data) { // {  'username':username, 'password':password, stay:stay (boolean for cookie) }
     var sql = "SELECT * FROM users WHERE users.username = \"" + data.username + "\";";
     console.log(sql);
     connection.query(sql, function(err,results) {
@@ -48,7 +50,7 @@ io.on('connection', function(socket) {
            socket.emit('loginResponse', { type:2 }); //type 2 = uname not found
         }
         else {
-          socket.emit('loginResponse', { 'results':results, type:1 }); //type 1 = login confirmed
+          socket.emit('loginResponse', { 'results':results, type:1, stay:data.stay }); //type 1 = login confirmed
           numUsers++;
           socket.loggedIn = true;
           socket.username = data.username;
@@ -83,6 +85,14 @@ io.on('connection', function(socket) {
       }
     });
   });
+  socket.on('guest', function() {
+    socket.username = 'guest' + guests.length+1;
+    socket.guest = true;
+    console.log('\'guest\'' + socket.username);
+    numUsers++;
+    socket.emit('guestConf', { username:socket.username });
+    socket.broadcast.emit('newGuest', { username:socket.username, 'numUsers':numUsers });
+  });
 
   socket.on('newMessage', function(data) { //{ username, fullname, message }
     console.log('\'newMessage\'' + '\n' + socket.username);
@@ -95,6 +105,7 @@ io.on('connection', function(socket) {
     console.log('\'disconnect\'');
     if(socket.loggedIn) {
       numUsers--;
+      if(socket.guest) delete guests[socket.username];
       console.log(socket.username + " has disconnected");
       socket.broadcast.emit('sysMessage',{ 
         'username':socket.username,

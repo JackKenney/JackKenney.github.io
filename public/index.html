@@ -12,7 +12,7 @@
 <body>
 <!--Chatroom Page-->
 <div id="pages">
-  <h3>Jack's Chatroom</h3>
+  <h2>Jack's Chatroom</h2>
   <div id="chat" class="page">
     <p id="logout">, <a id="logoutLink">logout</a>?</p> <!-- Prepend the "Logged in as (username/fullname)" to $('#logout')-->
     <ul id="chatArea"></ul>
@@ -29,6 +29,9 @@
       <input id="loginPassword" class="field" type="password" maxlength="25" placeholder="Password"/>
       <button id="loginButton" class="loginButton">Login</button>
       <button id="regLinkButton" class="loginButton">Register</button>
+      <button id="guestButton" class="loginButton">Guest</button>
+      <input type="checkbox" id="stayLoggedIn"/>
+      <label for="stayLoggedIn">Keep me logged in.</label>
     </div>
     <p id="loginError" class="err">*Username or password is incorrect*</p>
   </div>

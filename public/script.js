@@ -6,7 +6,7 @@ console.log(socket);
 
 $(document).ready( function() {
 //global client variables
-var numUsers = -1,
+var numUsers = 0,
     username = '',
     firstname = '',
     lastname = '',
@@ -21,7 +21,44 @@ var numUsers = -1,
     userCount = $(document.getElementById('userCount')),
     chatArea = $(document.getElementById('chatArea')),
     messageInput = $(document.getElementById('messageInput')),
-    isMobile = false;
+    isMobile = false,
+    staying = false,
+    cookies = {},
+    guest = false;
+//cookies
+
+function createCookies() {
+  var date = new Date();
+  date.setTime(date.getTime()+(1000*60*60));
+  var expires = "; expires = "+date.toGMTString();
+
+  document.cookie = "username = " + username + expires + "; path=/";
+  document.cookie = "firstname = " + firstname + expires + "; path=/";
+  document.cookie = "lastname = " + lastname + expires + "; path=/";
+  document.cookie = "fullname = " + fullname + expires + "; path=/";
+  document.cookie = "email = " + email + expires + "; path=/";
+}
+function getCookie() {
+  if(!cookies){ return "" }
+  else {
+    C = document.cookie.split('; ');
+    cookies = {};
+
+    for(i=C.length-1; i>=0; i--){
+      c = C[i].split('=');
+      cookies[c[0]] = c[1];
+    }
+  }
+  window.readCookie = readCookie;
+}
+function destroyCookies() {
+  document.cookie = username = ""; expires=""; path=/cookies/;
+  document.cookie = firstname = ""; expires=""; path=/cookies/;
+  document.cookie = lastname = ""; expires=""; path=/cookies/;
+  document.cookie = fullname = ""; expires=""; path=/cookies/;
+  document.cookie = email = ""; expires=""; path=/cookies/;
+}
+
 // Mobile accomodations:
 	
 /*if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) { 
@@ -84,6 +121,7 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
     lastname = data.results.lastname;
     fullname = data.results.firstname + " " + data.results.lastname;
     email = data.results.email;
+    if(data.stay) createCookies();
     loggedIn = true;
     loginPage.css('display','none');
     chatPage.css('display','block');
@@ -113,6 +151,15 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
   }
 });
 
+socket.on('guestConf', function(data) {
+  guest = true;
+  username = data.username;
+  updateUC(data.numUsers);
+  $('#logout').empty();
+  var nameText = document.createTextNode(fullname),
+      regText = document.createTextNode(', register?');
+  $('#logout').prepend(fullnametext);
+});
 //:End handlers for server emissions
 
 // Necessary functions:
@@ -163,6 +210,7 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
       chatArea.append(br);  
     }
     // any other user's message
+
     else if (data.type===2) {
       var mess = $(document.createElement('li')),
           mText = $(document.createTextNode(data.message)),
@@ -239,11 +287,12 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
   var loginCheck = function() {
     hideErrors();
     var username = $('#loginUsername').val().trim(),
-        password = CryptoJS.SHA256($('#loginPassword').val().trim()).toString();
-    console.log(password);
+        password = CryptoJS.SHA256($('#loginPassword').val().trim()).toString(),
+        stay = $('#stayLoggedIn').is(":checked");
+    console.log(stay);
     $('#loginPassword').val("");
     if( username !== "" && password !== "" ) {
-      socket.emit('login', { 'username':username, 'password':password });
+      socket.emit('login', { 'username':username, 'password':password, 'stay':stay });
     }
     else {
       $('#loginError').css('display','block');

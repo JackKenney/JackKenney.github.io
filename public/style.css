@@ -9,14 +9,14 @@ body {
   margin: 10px auto;
   max-width: 1030px;
 }
-h3 {
+h3, h2 {
   text-align: center;
   color: brown;
   display: block;
   height: 20px;
   line-height: 20px;
   margin: 0px;
-  margin-bottom: -5px;
+  margin-bottom: -15px;
 }
 h4 {
   text-align: center;
@@ -170,7 +170,7 @@ h4 {
 /* Login Page */
 #login {
   display: block;
-  width: 170px;
+  width: 247px;
   margin: 15px auto;
 }
 #loginBox {
@@ -178,9 +178,21 @@ h4 {
   margin: auto 0px auto auto;
   display: block;
 }
+input[type="checkbox"] {
+  background-color: steelblue;
+  margin: 6px 2px;
+  text-align: center;
+}
+input[type="checkbox"] + label {
+  color: slategray;
+  width: 140px;
+  height: 25px;
+  margin: auto 0px;
+  text-align: center;
+}
 .field { /* Applies to both Login and Register Pages */
-  height: 30px;
-  width: 150px;
+  height: 34px;
+  width: 224px;
   border-radius: 5px;
   display: block;
   margin: 0px auto 4px auto;
@@ -200,6 +212,9 @@ h4 {
   color: aliceblue;
   font-family: serif;
   font-size: 100%;
+}
+#guestButton {
+  float: right;
 }
 
 /* Registration Page */
