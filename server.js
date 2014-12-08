@@ -24,7 +24,7 @@ server.listen(port, function() {
 // Chatroom:
 //  Variables
 var numUsers = 0, //number of users currently logged in!
-    guests = {};
+    guests = 0;
 
 //connect to database
 connection.connect();
@@ -36,6 +36,7 @@ io.on('connection', function(socket) {
   socket.emit('connected', { 'numUsers':numUsers } );
   socket.loggedIn = false;
   socket.guest = false;
+  socket.username = '';
 
   socket.on('login', function(data) { // {  'username':username, 'password':password, stay:stay (boolean for cookie) }
     var sql = "SELECT * FROM users WHERE users.username = \"" + data.username + "\";";
@@ -86,12 +87,13 @@ io.on('connection', function(socket) {
     });
   });
   socket.on('guest', function() {
-    socket.username = 'guest' + guests.length+1;
+    socket.username = 'guest' + (guests+1);
+    guests++;
     socket.guest = true;
-    console.log('\'guest\'' + socket.username);
+    console.log('\'guest\' ' + socket.username);
     numUsers++;
     socket.emit('guestConf', { username:socket.username });
-    socket.broadcast.emit('newGuest', { username:socket.username, 'numUsers':numUsers });
+    socket.broadcast.emit('sysMessage', { username:socket.username, type:1, 'numUsers':numUsers });
   });
 
   socket.on('newMessage', function(data) { //{ username, fullname, message }
@@ -99,13 +101,23 @@ io.on('connection', function(socket) {
     socket.broadcast.emit('otherMessage', { username:socket.username, fullname:socket.fullname, message:data.message } );
   });
 
+  socket.on('guestOut', function() {
+    guests--;
+    numUsers--;
+    socket.broadcast.emit('sysMessage', {
+      'username':socket.username,
+      'type':2,
+      'numUsers':numUsers
+    });
+    socket.username = ''; 
+  });
   socket.on('disconnect', function() {  //{ username }
     //emit to all users that user "____ has left" and the updated userCount
     //{ username, type (2), numUsers }
     console.log('\'disconnect\'');
     if(socket.loggedIn) {
       numUsers--;
-      if(socket.guest) delete guests[socket.username];
+      if(socket.guest) guests--;
       console.log(socket.username + " has disconnected");
       socket.broadcast.emit('sysMessage',{ 
         'username':socket.username,
@@ -114,7 +126,7 @@ io.on('connection', function(socket) {
       });
     }
     else {
-      socket.username = undefined;
+      socket.username = '';
       console.log("someone refreshed");
     }
   });

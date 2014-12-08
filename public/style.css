@@ -47,14 +47,14 @@ h4 {
   display: none;
   border-radius: 5px;
 }
-#logout {
+#logout, #regTextLink {
   text-align: right;
   float: right;
   color: brown;
   margin-right: 5px;
   font-style: italic;
 }
-#logout a {
+#logout a, #regTextLink a{
   color: antiquewhite;
   font-style: normal;
 }
@@ -220,11 +220,22 @@ input[type="checkbox"] + label {
 /* Registration Page */
 #register {
   display: none;
-  width: 170px;
+  width: 247px;
   margin: 15px auto;
 }
 #registerBox {
   padding: 10px;
   margin: auto;
 }
-
+.regButton {
+  height: 30px;
+  width: 49%;
+  border-radius: 5px;
+  display: inline-block;
+  padding 5px;
+  margin: 0px auto 4px auto;
+  background-color: steelblue;
+  color: aliceblue;
+  font-family: serif;
+  font-size: 100%;
+}

@@ -32,11 +32,8 @@ function createCookies() {
   date.setTime(date.getTime()+(1000*60*60));
   var expires = "; expires = "+date.toGMTString();
 
-  document.cookie = "username = " + username + expires + "; path=/";
-  document.cookie = "firstname = " + firstname + expires + "; path=/";
-  document.cookie = "lastname = " + lastname + expires + "; path=/";
-  document.cookie = "fullname = " + fullname + expires + "; path=/";
-  document.cookie = "email = " + email + expires + "; path=/";
+  document.cookie = "loggedIn = true;" + expires + "; path=/";
+  document.cookie = "username = " + username + ";" + expires + "; path=/";
 }
 function getCookie() {
   if(!cookies){ return "" }
@@ -52,11 +49,8 @@ function getCookie() {
   window.readCookie = readCookie;
 }
 function destroyCookies() {
+  document.cookie = loggedIn = ""; expires=""; path=/cookies/;
   document.cookie = username = ""; expires=""; path=/cookies/;
-  document.cookie = firstname = ""; expires=""; path=/cookies/;
-  document.cookie = lastname = ""; expires=""; path=/cookies/;
-  document.cookie = fullname = ""; expires=""; path=/cookies/;
-  document.cookie = email = ""; expires=""; path=/cookies/;
 }
 
 // Mobile accomodations:
@@ -151,15 +145,42 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
   }
 });
 
-socket.on('guestConf', function(data) {
+socket.on('guestConf', function(data) { // { username }
+  console.log('guestConf');
   guest = true;
   username = data.username;
   updateUC(data.numUsers);
-  $('#logout').empty();
-  var nameText = document.createTextNode(fullname),
-      regText = document.createTextNode(', register?');
-  $('#logout').prepend(fullnametext);
+  $('#logout').css('display','none');
+  $('#regTextLink').remove();
+  var wrap = document.createElement('p'),
+      link = document.createElement('a'),
+      text = document.createTextNode('Welcome, friend! '),
+      linkText = document.createTextNode('Register'),
+      end = document.createTextNode('?');
+  $(wrap).append(text);
+  $(wrap).attr('id','regTextLink');
+  $(link).append(linkText);
+  $(wrap).append(link);
+  $(wrap).append(end);
+  chatPage.prepend(wrap);
+  
+  $(link).click(function() {
+    console.log('regclicked');
+    chatPage.css('display','none');
+    regPage.css('display','block');
+    var first = document.createTextNode(", "),
+        last = document.createTextNode('?');
+    var a = $(document.createElement('a')),
+        atext = document.createTextNode('logout');
+    a.append(atext);
+    $('#logout').empty().prepend(first).append(a).append(last);
+    socket.emit('guestOut');
+  });
+
+  loginPage.css('display','none');
+  chatPage.css('display','block');
 });
+
 //:End handlers for server emissions
 
 // Necessary functions:
@@ -347,6 +368,20 @@ socket.on('guestConf', function(data) {
   });
   $('#regButton').click(function() {
     registerCheck();
+  });
+  $('#guestButton').click(function() {
+    socket.emit('guest');
+  });
+  $('#regTextLink').click(function() {
+    console.log('regclicked');
+    chatPage.css('display','none');
+    regPage.css('display','block');
+    var first = document.createTextNode(", "),
+        last = document.createTextNode('?');
+    var a = $(document.createElement('a')),
+        atext = document.createTextNode('logout');
+    a.append(atext);
+    $('#logout').empty().prepend(first).append(a).append(last);
   });
   $('#logoutLink').click(function() {
     chatPage.css('display','none');
