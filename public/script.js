@@ -32,24 +32,30 @@ function createCookies() {
   date.setTime(date.getTime()+(1000*60*60));
   var expires = "; expires = "+date.toGMTString();
 
-  document.cookie = "loggedIn = true;" + expires + "; path=/";
   document.cookie = "username = " + username + ";" + expires + "; path=/";
 }
-function getCookie() {
-  if(!cookies){ return "" }
-  else {
-    C = document.cookie.split('; ');
-    cookies = {};
-
-    for(i=C.length-1; i>=0; i--){
-      c = C[i].split('=');
-      cookies[c[0]] = c[1];
-    }
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  	}
+	return null;
+}
+function checkCookies() {
+  var x = readCookie('username');
+  if(readCookie()!==null) {
+    var start = x.indexOf("username = ") + 10,
+        end = start + x.substring(start).indexOf(";"),
+        usern = x.substring(start,end);
+    console.log(usern);
+    return usern;
   }
-  window.readCookie = readCookie;
+  else return false;
 }
 function destroyCookies() {
-  document.cookie = loggedIn = ""; expires=""; path=/cookies/;
   document.cookie = username = ""; expires=""; path=/cookies/;
 }
 
@@ -71,6 +77,10 @@ socket.on('connected', function(data) { //{ 'numUsers':numUsers }
   updateUC(data.numUsers);
   connected = true;
   log({ message:"Welcome!", type:3 } );
+  if (checkCookies()) {
+    var u = checkCookies();
+    socket.emit('cookie', { username:u });
+  }
 });
 
 //any incoming system message (login,logout,namechange)
@@ -119,8 +129,7 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
     loggedIn = true;
     loginPage.css('display','none');
     chatPage.css('display','block');
-    var fullnametext = document.createTextNode(fullname);
-    $('#logout').prepend(fullnametext);
+    exitMes(true,fullname);
   }
   else {
     console.log('type2');
@@ -151,31 +160,7 @@ socket.on('guestConf', function(data) { // { username }
   username = data.username;
   updateUC(data.numUsers);
   $('#logout').css('display','none');
-  $('#regTextLink').remove();
-  var wrap = document.createElement('p'),
-      link = document.createElement('a'),
-      text = document.createTextNode('Welcome, friend! '),
-      linkText = document.createTextNode('Register'),
-      end = document.createTextNode('?');
-  $(wrap).append(text);
-  $(wrap).attr('id','regTextLink');
-  $(link).append(linkText);
-  $(wrap).append(link);
-  $(wrap).append(end);
-  chatPage.prepend(wrap);
-  
-  $(link).click(function() {
-    console.log('regclicked');
-    chatPage.css('display','none');
-    regPage.css('display','block');
-    var first = document.createTextNode(", "),
-        last = document.createTextNode('?');
-    var a = $(document.createElement('a')),
-        atext = document.createTextNode('logout');
-    a.append(atext);
-    $('#logout').empty().prepend(first).append(a).append(last);
-    socket.emit('guestOut');
-  });
+  exitMes(false); 
 
   loginPage.css('display','none');
   chatPage.css('display','block');
@@ -184,7 +169,53 @@ socket.on('guestConf', function(data) { // { username }
 //:End handlers for server emissions
 
 // Necessary functions:
+  var exitMes = function(type,name) {
+    //type true = reg logout
+    if(type) {
+      console.log("known user logout message populated");
+      var first = document.createTextNode(", "),
+            last = document.createTextNode('?');
+      var a = $(document.createElement('a')),
+            atext = document.createTextNode('logout');
+      a.append(atext);
+      a.attr("id","logoutLink");
+      $('#logout').empty().prepend(first).append(a).append(last);
+      $('#logout').prepend(name);
+      $('#logoutLink').click(function() {
+        chatPage.css('display','none');
+        loginPage.css('display','block');
+      });
+    }
+    //type false = friend
+    else {
+      console.log("guest logout mess populated");
+      $('#regTextLink').remove();
+      var wrap = document.createElement('p'),
+          link = document.createElement('a'),
+          text = document.createTextNode('Welcome, friend! '),
+          linkText = document.createTextNode('Register'),
+          end = document.createTextNode('?');
+      $(wrap).append(text);
+      $(wrap).attr('id','regTextLink');
+      $(link).append(linkText);
+      $(wrap).append(link);
+      $(wrap).append(end);
+      chatPage.prepend(wrap);
 
+      $(link).click(function() {
+        console.log('regclicked');
+        chatPage.css('display','none');
+        regPage.css('display','block');
+        var first = document.createTextNode(", "),
+            last = document.createTextNode('?');
+        var a = $(document.createElement('a')),
+            atext = document.createTextNode('logout');
+        a.append(atext);
+        $('#logout').empty().prepend(first).append(a).append(last);
+        socket.emit('guestOut');
+      });
+    }
+  }
   var updateUC = function(nu) {
     if(nu !== undefined) {
         numUsers = nu;
@@ -383,7 +414,7 @@ socket.on('guestConf', function(data) { // { username }
     a.append(atext);
     $('#logout').empty().prepend(first).append(a).append(last);
   });
-  $('#logoutLink').click(function() {
+  $('#logout a').click(function() {
     chatPage.css('display','none');
     loginPage.css('display','block');
     var first = document.createTextNode(", "),

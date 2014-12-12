@@ -51,14 +51,18 @@ io.on('connection', function(socket) {
            socket.emit('loginResponse', { type:2 }); //type 2 = uname not found
         }
         else {
-          socket.emit('loginResponse', { 'results':results, type:1, stay:data.stay }); //type 1 = login confirmed
           numUsers++;
+          socket.emit('loginResponse', { 'results':results, type:1, stay:data.stay, 'numUsers':numUsers }); //type 1 = login confirmed
           socket.loggedIn = true;
           socket.username = data.username;
           socket.fullname = results.firstname + ' ' + results.lastname;
         }
       } 
     });  
+  });
+
+  socket.on('cookie', function(data) { // { 
+    
   });
 
   socket.on('register', function(data) {  //{ username, firstname, lastname, email, password }
