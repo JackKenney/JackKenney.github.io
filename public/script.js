@@ -27,14 +27,16 @@ var numUsers = 0,
     guest = false;
 //cookies
 
-function createCookies() {
+function createCookies(name,value,hours) {
+  console.log("Cookie Created");
   var date = new Date();
-  date.setTime(date.getTime()+(1000*60*60));
+  date.setTime(date.getTime()+(1000*60*60*(hours ? hours : 1)));
   var expires = "; expires = "+date.toGMTString();
-
-  document.cookie = "username = " + username + ";" + expires + "; path=/";
+  value = username;
+  document.cookie = name + " = " + value + ";" + expires + "; path=/";
 }
 function readCookie(name) {
+  console.log("cookie read");
 	var nameEQ = name + "=";
 	var ca = document.cookie.split(';');
 	for(var i=0;i < ca.length;i++) {
@@ -45,18 +47,21 @@ function readCookie(name) {
 	return null;
 }
 function checkCookies() {
+  console.log("Cookie checked");
   var x = readCookie('username');
-  if(readCookie()!==null) {
-    var start = x.indexOf("username = ") + 10,
+  if(x!==null) {
+    /*var start = x.indexOf("username = ") + 10,
         end = start + x.substring(start).indexOf(";"),
-        usern = x.substring(start,end);
-    console.log(usern);
-    return usern;
+        usern = x.substring(start,end);*/
+    console.log(x);
+    return x;
   }
   else return false;
 }
 function destroyCookies() {
-  document.cookie = username = ""; expires=""; path=/cookies/;
+  console.log("cookie destroyed");
+  createCookies("username","",-1);
+  readCookie("username");
 }
 
 // Mobile accomodations:
@@ -77,10 +82,12 @@ socket.on('connected', function(data) { //{ 'numUsers':numUsers }
   updateUC(data.numUsers);
   connected = true;
   log({ message:"Welcome!", type:3 } );
-  if (checkCookies()) {
+  if (checkCookies()!==false) {
     var u = checkCookies();
+    console.log(u + " is username cookie value");
     socket.emit('cookie', { username:u });
   }
+  else console.log( "cookie blank" );
 });
 
 //any incoming system message (login,logout,namechange)
@@ -93,10 +100,6 @@ socket.on('sysMessage', function(data) { //{ username, type, [numUsers], [submit
   else if (data.type===2) {
     var mess = data.username + " has left the chatroom.";
     log({ message:mess, type:3 });
-  }
-  else if (data.type===3) {
-    var mess = data.username + " changed their name to " + data.submit;
-    log({ message:mess, type:3 }); 
   }
   updateUC(data.numUsers);
 });
@@ -119,13 +122,13 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
   console.log('loginResponse'); //type 1 = conf, 2 = uname not found || passwords don't match
   if(data.type == 1) {
     console.log('type 1');
-    updateUC(numUsers);
+    updateUC(data.numUsers);
     username = data.results.username;
     firstname = data.results.firstname;
     lastname = data.results.lastname;
     fullname = data.results.firstname + " " + data.results.lastname;
     email = data.results.email;
-    if(data.stay) createCookies();
+    if(data.stay) createCookies("username",username,1);
     loggedIn = true;
     loginPage.css('display','none');
     chatPage.css('display','block');
@@ -154,10 +157,16 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
   }
 });
 
-socket.on('guestConf', function(data) { // { username }
+socket.on('guestConf', function(data) { // { username, numUsers }
   console.log('guestConf');
   guest = true;
+  loggedIn = true;
   username = data.username;
+  email = '';
+  firstname = '';
+  lastname = '';
+  fullname = data.username;
+  console.log(username + ": this is my username");
   updateUC(data.numUsers);
   $('#logout').css('display','none');
   exitMes(false); 
@@ -181,9 +190,17 @@ socket.on('guestConf', function(data) { // { username }
       a.attr("id","logoutLink");
       $('#logout').empty().prepend(first).append(a).append(last);
       $('#logout').prepend(name);
+      $('#logout').css('display','block');
       $('#logoutLink').click(function() {
+        socket.emit('logout',{ 'username':username });
         chatPage.css('display','none');
         loginPage.css('display','block');
+        destroyCookies();
+        $('.log').remove();
+        $('.message').remove(); 
+        $('.name').remove();
+        $('#logout').empty();
+        $('#logoutLink').remove();
       });
     }
     //type false = friend
@@ -206,13 +223,11 @@ socket.on('guestConf', function(data) { // { username }
         console.log('regclicked');
         chatPage.css('display','none');
         regPage.css('display','block');
-        var first = document.createTextNode(", "),
-            last = document.createTextNode('?');
-        var a = $(document.createElement('a')),
-            atext = document.createTextNode('logout');
-        a.append(atext);
-        $('#logout').empty().prepend(first).append(a).append(last);
-        socket.emit('guestOut');
+        $('#regTextLink').empty();
+        socket.emit('guestOut', { 'username':username } );
+        $('.log').remove();
+        $('.message').remove();
+        $('.name').remove();
       });
     }
   }

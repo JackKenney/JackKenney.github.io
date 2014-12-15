@@ -52,9 +52,8 @@ io.on('connection', function(socket) {
         }
         else {
           numUsers++;
-          socket.emit('loginResponse', { 'results':results, type:1, stay:true, 'numUsers':numUsers }); //type 1 = login confirmed
+          socket.emit('loginResponse', { 'results':results, type:1, stay:data.stay, 'numUsers':numUsers }); //type 1 = login confirmed
           socket.loggedIn = true;
-          socket.guest = false;
           socket.username = data.username;
           socket.fullname = results.firstname + ' ' + results.lastname;
         }
@@ -63,7 +62,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on('cookie', function(data) { // { username:u }
-    console.log('cookie');
     var sql = "SELECT * FROM users WHERE users.username = \"" + data.username + "\";";
     connection.query(sql, function(err,results) {
       console.log(results);
@@ -72,12 +70,10 @@ io.on('connection', function(socket) {
       if(err) console.log(err);
       else {
         numUsers++;
-        socket.emit('loginResponse', { 'results':results, type:1, 'numUsers':numUsers }); //type 1 = conf
+        socket.emit('loginResponse', { 'results':results, type:1, 'numUsers':numUsers }); //type 1 = login confirmed
         socket.loggedIn = true;
-        socket.guest = false;
         socket.username = data.username;
         socket.fullname = results.firstname + ' ' + results.lastname;
-        socket.broadcast.emit('sysMessage', { username:socket.username, type:1, 'numUsers':numUsers });
       } 
     });    
   });
@@ -109,13 +105,11 @@ io.on('connection', function(socket) {
   });
   socket.on('guest', function() {
     socket.username = 'guest' + (guests+1);
-    console.log(socket.username);
     guests++;
     socket.guest = true;
-    socket.loggedIn = true;
     console.log('\'guest\' ' + socket.username);
     numUsers++;
-    socket.emit('guestConf', { username:socket.username, 'numUsers':numUsers });
+    socket.emit('guestConf', { username:socket.username });
     socket.broadcast.emit('sysMessage', { username:socket.username, type:1, 'numUsers':numUsers });
   });
 
@@ -123,12 +117,7 @@ io.on('connection', function(socket) {
     console.log('\'newMessage\'' + '\n' + socket.username);
     socket.broadcast.emit('otherMessage', { username:socket.username, fullname:socket.fullname, message:data.message } );
   });
-  socket.on('logout', function(data) { // {username}
-    numUsers--;
-    socket.broadcast.emit('sysMessage', { 'username':socket.username, 'type':2, 'numUsers':numUsers });
-    socket.username = '';
-    socket.loggedIn = false;
-  });
+
   socket.on('guestOut', function() {
     guests--;
     numUsers--;
@@ -138,8 +127,6 @@ io.on('connection', function(socket) {
       'numUsers':numUsers
     });
     socket.username = ''; 
-    socket.loggedIn = false;
-    socket.guest = false;
   });
   socket.on('disconnect', function() {  //{ username }
     //emit to all users that user "____ has left" and the updated userCount
