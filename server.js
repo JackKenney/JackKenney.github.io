@@ -28,7 +28,6 @@ var numUsers = 0, //number of users currently logged in!
 
 //connect to database
 connection.connect();
-console.log('Database Connection Established!');
 
 //  Sockets
 
@@ -39,12 +38,10 @@ io.on('connection', function(socket) {
   socket.username = '';
 
   socket.on('login', function(data) { // {  'username':username, 'password':password, stay:stay (boolean for cookie) }
+    console.log('user logged in');
     var sql = "SELECT * FROM users WHERE users.username = \"" + data.username + "\";";
-    console.log(sql);
     connection.query(sql, function(err,results) {
-      console.log(results);
       results = results[0];
-      console.log(results);
       if(err) console.log(err);
       else {
         if(results === undefined || results.password !== data.password) {
@@ -63,12 +60,9 @@ io.on('connection', function(socket) {
   });
 
   socket.on('cookie', function(data) { // { username:u }
-    console.log('cookie');
     var sql = "SELECT * FROM users WHERE users.username = \"" + data.username + "\";";
     connection.query(sql, function(err,results) {
-      console.log(results);
       results = results[0];
-      console.log(results);
       if(err) console.log(err);
       else {
         numUsers++;
@@ -90,7 +84,6 @@ io.on('connection', function(socket) {
     sql += "\""+data.lastname+"\",";
     sql += "\""+data.email+"\",";
     sql += "\""+data.password+"\");";
-    console.log(sql);
 
     var sql2 = "SELECT * FROM users WHERE users.username = \"" + data.username + "\"";
     connection.query(sql2, function(err,results) {
@@ -109,11 +102,9 @@ io.on('connection', function(socket) {
   });
   socket.on('guest', function() {
     socket.username = 'guest' + (guests+1);
-    console.log(socket.username);
     guests++;
     socket.guest = true;
     socket.loggedIn = true;
-    console.log('\'guest\' ' + socket.username);
     numUsers++;
     socket.emit('guestConf', { username:socket.username, 'numUsers':numUsers });
     socket.broadcast.emit('sysMessage', { username:socket.username, type:1, 'numUsers':numUsers });
@@ -144,7 +135,6 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {  //{ username }
     //emit to all users that user "____ has left" and the updated userCount
     //{ username, type (2), numUsers }
-    console.log('\'disconnect\'');
     if(socket.loggedIn) {
       numUsers--;
       if(socket.guest) guests--;

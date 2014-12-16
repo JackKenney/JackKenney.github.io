@@ -2,7 +2,6 @@
 
 // Connect to server
 var socket = io('/');
-console.log(socket);
 
 $(document).ready( function() {
 //global client variables
@@ -28,7 +27,6 @@ var numUsers = 0,
 //cookies
 
 function createCookies(name,value,hours) {
-  console.log("Cookie Created");
   var date = new Date();
   date.setTime(date.getTime()+(1000*60*60*(hours ? hours : 1)));
   var expires = "; expires = "+date.toGMTString();
@@ -36,7 +34,6 @@ function createCookies(name,value,hours) {
   document.cookie = name + " = " + value + ";" + expires + "; path=/";
 }
 function readCookie(name) {
-  console.log("cookie read");
 	var nameEQ = name + "=";
 	var ca = document.cookie.split(';');
 	for(var i=0;i < ca.length;i++) {
@@ -47,19 +44,16 @@ function readCookie(name) {
 	return null;
 }
 function checkCookies() {
-  console.log("Cookie checked");
   var x = readCookie('username');
   if(x!==null) {
     /*var start = x.indexOf("username = ") + 10,
         end = start + x.substring(start).indexOf(";"),
         usern = x.substring(start,end);*/
-    console.log(x);
     return x;
   }
   else return false;
 }
 function destroyCookies() {
-  console.log("cookie destroyed");
   createCookies("username","",-1);
   readCookie("username");
 }
@@ -78,21 +72,17 @@ function destroyCookies() {
 // Socket handlers for incoming server emissions:
 //handler for initial connection information
 socket.on('connected', function(data) { //{ 'numUsers':numUsers }
-  console.log('connected');
   updateUC(data.numUsers);
   connected = true;
   log({ message:"Welcome!", type:3 } );
   if (checkCookies()!==false) {
     var u = checkCookies();
-    console.log(u + " is username cookie value");
     socket.emit('cookie', { username:u });
   }
-  else console.log( "cookie blank" );
 });
 
 //any incoming system message (login,logout,namechange)
 socket.on('sysMessage', function(data) { //{ username, type, [numUsers], [submit] }
-  console.log('sysMessage');
   if(data.type===1)  {
     var mess = data.username + " has joined the chatroom!";
     log({ message:mess, type:3 });
@@ -106,22 +96,18 @@ socket.on('sysMessage', function(data) { //{ username, type, [numUsers], [submit
 
 //any incoming message from another user
 socket.on('otherMessage', function(data) { //{ username, message, fullname }
-  console.log('otherMessage');
   if(data.username!==username) {
     log({ message:data.message, type:2, username:data.username, fullname:data.fullname });
-    console.log("someone else's message added");
   }
   else {
     log({ message:data.message, type:1 });
-    console.log("my message added");
   }
 });
 
 //server response to login request
 socket.on('loginResponse', function(data) { //{ results(object), type, numUsers }
-  console.log('loginResponse'); //type 1 = conf, 2 = uname not found || passwords don't match
+  //type 1 = conf, 2 = uname not found || passwords don't match
   if(data.type == 1) {
-    console.log('type 1');
     updateUC(data.numUsers);
     username = data.results.username;
     firstname = data.results.firstname;
@@ -135,7 +121,6 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
     exitMes(true,fullname);
   }
   else {
-    console.log('type2');
     $('#loginError').css('display','block');
   }
   $('#loginPassword').val('');
@@ -143,7 +128,6 @@ socket.on('loginResponse', function(data) { //{ results(object), type, numUsers 
 
 //server response to registration
 socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
-  console.log('registerResponse');
   if(data.type === 1) {
     regPage.css('display','none');
     loginPage.css('display','block');
@@ -158,7 +142,6 @@ socket.on('registerResponse', function(data) { // { firstname, type, numUsers }
 });
 
 socket.on('guestConf', function(data) { // { username, numUsers }
-  console.log('guestConf');
   guest = true;
   loggedIn = true;
   username = data.username;
@@ -166,7 +149,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
   firstname = '';
   lastname = '';
   fullname = data.username;
-  console.log(username + ": this is my username");
   updateUC(data.numUsers);
   $('#logout').css('display','none');
   exitMes(false); 
@@ -181,7 +163,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
   var exitMes = function(type,name) {
     //type true = reg logout
     if(type) {
-      console.log("known user logout message populated");
       var first = document.createTextNode(", "),
             last = document.createTextNode('?');
       var a = $(document.createElement('a')),
@@ -205,7 +186,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
     }
     //type false = friend
     else {
-      console.log("guest logout mess populated");
       $('#regTextLink').remove();
       var wrap = document.createElement('p'),
           link = document.createElement('a'),
@@ -220,7 +200,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
       chatPage.prepend(wrap);
 
       $(link).click(function() {
-        console.log('regclicked');
         chatPage.css('display','none');
         regPage.css('display','block');
         $('#regTextLink').empty();
@@ -255,7 +234,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
     $('#nameError').css('display','inline-block');
   }
   var log = function(data) { //data is { message, [type], [user], [fullname] }
-    console.log(data);
     // a message from me
     if (data.type===1) {
       var mess = $(document.createElement('li')),
@@ -333,7 +311,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
         confPassword = CryptoJS.SHA256($('#confPassword').val().trim()).toString();
     $('#regPassword').val('');
     $('#confPassword').val('');
-    console.log(password);
     if (
        firstname == "" ||
        lastname == "" ||
@@ -356,7 +333,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
     var username = $('#loginUsername').val().trim(),
         password = CryptoJS.SHA256($('#loginPassword').val().trim()).toString(),
         stay = $('#stayLoggedIn').is(":checked");
-    console.log(stay);
     $('#loginPassword').val("");
     if( username !== "" && password !== "" ) {
       socket.emit('login', { 'username':username, 'password':password, 'stay':stay });
@@ -371,7 +347,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
     socket.emit('newMessage', { 'username':username, 'fullname':fullname, message:mess });
     log( {message:mess, type:1 } );
     messageInput.val("");
-    console.log(username + ' ' + fullname + ' ' + mess);
   }
 
 // :End Necessary Functions
@@ -419,7 +394,6 @@ socket.on('guestConf', function(data) { // { username, numUsers }
     socket.emit('guest');
   });
   $('#regTextLink').click(function() {
-    console.log('regclicked');
     chatPage.css('display','none');
     regPage.css('display','block');
     var first = document.createTextNode(", "),
