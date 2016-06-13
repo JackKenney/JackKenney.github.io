@@ -1,5 +1,6 @@
-//SERVER
-// Basic setup w/ express and socket.io:
+/*SERVER
+Author: Jack Kenney
+Basic setup w/ express and socket.io: */
 
 var express = require('express'),
     app = express(),
