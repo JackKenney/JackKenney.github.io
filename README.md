@@ -1,4 +1,5 @@
-chatroom
+Chatroom
+by Jack Kenney
 ========
 
-Full-out chatroom with database and the works!
+A socket-based, Node.js chatroom with MySQL database backend.
