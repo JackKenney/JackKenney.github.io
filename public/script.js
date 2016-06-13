@@ -1,5 +1,8 @@
-//CLIENT SIDE SCRIPTS:
-
+/*
+CLIENT SIDE SCRIPTS:
+Author: Jack Kenney
+jQuery and Socket.IO front-end interactions
+*/
 // Connect to server
 var socket = io('/');
 
