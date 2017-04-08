@@ -1,7 +1,0 @@
-{
-  "name":"chatroom",
-  "version":"2.0.0",
-  "bin": { "chatroom":"./" },
-  "private":"false",
-  "dependencies": { "express":"4.9.4", "mysql":"~2.3.2" }
-}
