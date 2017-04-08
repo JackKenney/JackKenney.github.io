@@ -1,0 +1,37 @@
+ body {
+     margin: 0px;
+     background-color: #e8e8e8;
+ }
+ #company-name {
+     color: #f06151;
+ }
+ #project-name {
+     color: #f06151;
+ }
+ #school-name {
+     color: #f06151;
+ }
+ .date {
+     color: #333333;
+ }
+ .progress-skills {
+     background-color: #f06151
+ }
+ /** icon links color **/
+ .fa {
+     color: #f06151;
+ }
+
+/** color of company name, school name, and project name headers */ 
+ h4 {
+     font-color: #f06151;
+ }
+ 
+ /** adds shadow to boxes **/
+ div.card {
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ }
+
+ .myContainer {
+     margin-top: 15px;
+ }

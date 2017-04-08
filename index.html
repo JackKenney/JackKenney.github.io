@@ -1,106 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>Jumbotron Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="jumbotron.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
+   <!-- begin head--> 
+   <head>
+      <title>Jane Doe</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!--CSS--> 
+      <!-- Bootstrap CDN --> 
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      <!-- Font Awesome CDN--> 
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <!--your css sheet-->
+      <link rel="stylesheet" type="text/css" href="myStyle.css">
+      <!-- Scripts --> 
+      <!-- JQuery--> 
+      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"> </script>
+      <!-- Ajax --> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <!-- boostrap min js -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+   </head>
+   <!-- end head--> 
+   <!-- begin body --> 
+   <body>
+      <!--begin myContainer--> 
+      <div class="container-fluid myContainer">
+         <!-- begin row -->
+         <div class="row">
+            <!--beigin left column-->
+            <div class="col-sm-4">
+               <div class="card">
+                  <img class="img-fluid" src="http://cdn2.amerikanki.com/wp-content/uploads/2013/10/Smile.jpg" alt="Card image cap">
+                  <div class="card-block">
+                     <!-- change to your name--> 
+                     <h2 class="card-title" style="text-align: left "> Jane Doe</h2>
+                     <!-- give yourself a title --> 
+                     <p class="card-text" style ="text-align: left">Full Stack Engineer</p>
+                     <!-- give a brief description about yourself--> 
+                     <small> A few words about me </small>
+                     <hr />
+                     <h4> Contact </h4>
+                     <!-- begin icons and contact info --> 
+                     <div class = "icon-links">
+                        <small> <i class="fa fa-phone" aria-hidden="true"></i> 555-345-6678</small><br>
+                        <small> <i class="fa fa-envelope" aria-hidden="true"></i> info@janedoe.com</> </small> <br>
+                        <!-- change the url in the following to link to your github and linkedin accounts respectively --> 
+                        <small> <a href="https://www.github.com"><i class="fa fa-github" aria-hidden="true"></i> </a> JaneDoe </small> <br>
+                        <small> <a href="https://www.linkedin.com"> <i class="fa fa-linkedin" aria-hidden="true"></i> </a> LinkedIn </small>
+                     </div>
+                     <!-- end icons --> 
+                     <hr />
+                     <h4> Skills </h4>
+                     <!-- begin Java --> 
+                     <small>Java</small>
+                     <div class="progress">
+                        <div class="progress-bar progress-skills" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+                           90%
+                        </div>
+                     </div>
+                     <!-- end Java -->
+                     <!-- begin Scala --> 
+                     <small>Scala </small>
+                     <div class="progress">
+                        <div class="progress-bar progress-skills"" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                           80%
+                        </div>
+                     </div>
+                     <!-- end Scala --> 
+                     <!-- begin Python -->
+                     <small>Python</small>
+                     <div class="progress">
+                        <div class="progress-bar progress-skills"" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                           70%
+                        </div>
+                     </div>
+                     <!-- end Python -->
+                     <!-- begin C --> 
+                     <small>C</small>
+                     <div class="progress">
+                        <div class="progress-bar progress-skills"" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                           70%
+                        </div>
+                     </div>
+                     <!-- end C --> 
+                     <!-- begin SQL --> 
+                     <small>SQL</small>
+                     <div class="progress">
+                        <div class="progress-bar progress-skills"" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                           60%
+                        </div>
+                     </div>
+                     <!-- card-block --> 
+                     <hr />
+                  </div>
+                  <!-- end of card --> 
+               </div>
+               <!-- end of left column--> 
+               <br>
             </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
+
+
+            <!-- end of row -->
+            <!--begin right column-->
+            <div class="col-sm-8">
+               <!-- begin work experience --> 
+               <div class="card">
+                  <div class="card-block">
+                     <h4> Work Experience </h4>
+                     <br>
+                     <!-- Experience # 1 --> 
+                     <p id ="company-name" style="text-align:left;">
+                        Company ABC
+                        <span style="float:right;"> <small class ="date"> Jan 2016 - present </small> </span>
+                     </p>
+                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                     <hr />
+                     <!-- end of Experience 1 --> 
+                     <!-- Begin Experience 2 -->
+                     <p id ="company-name" style="text-align:left;">
+                        Company XYZ
+                        <span style="float:right;"> <small class ="date">Oct 2016 - Jan 2016 </small> </span>
+                     </p>
+                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                     <!-- end of Experience 2 --> 
+                  </div>
+               </div>
+               <br>
+               <!--end work experience -->
+               <!-- begin education-->
+               <div class="card">
+                  <div class="card-block">
+                     <h4> Education </h4>
+                     <p id ="school-name" style="text-align:left;">
+                        Umass Amherst B.S Computer Science
+                        <span style="float:right;">  <small class ="date"> May 2020 </small> </span>
+                     </p>
+                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                  </div>
+               </div>
+               <br>
+               <!-- end education--> 
+               <!--begin projects--> 
+               <div class="card">
+                  <div class="card-block">
+                     <h4> Projects</h4>
+                     <!-- begin project 1 --> 
+                     <p id ="project-name" style="text-align:left;">
+                        CSV Parser 
+                        <span style="float:right;">   <small class ="date"> May 2020 </small> </span>
+                     </p>
+                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                     <!-- end of project 1 --> 
+                  </div>
+               </div>
+               <!-- end projects --> 
             </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
-        </div><!--/.navbar-collapse -->
+            <!-- end of right column-->
+         </div>
+         <!--end of row-->
       </div>
-    </nav>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
-      </div>
-    </div>
-
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; 2016 Company, Inc.</p>
-      </footer>
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+      <!-- end of myContainer-->
+   </body>
+   <!-- end body -->
 </html>
