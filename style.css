@@ -3,19 +3,19 @@
      background-color: #e8e8e8;
  }
  #company-name {
-     color: #f06151;
+     color: #0061cf;
  }
  #project-name {
-     color: #f06151;
+     color: #0061cf;
  }
  #school-name {
-     color: #f06151;
+     color: #0061cf;
  }
  .date {
      color: #333333;
  }
  .progress-skills {
-     background-color: #f06151
+     background-color: #0061cf
  }
  .img-fluid {
    width: 100%;
@@ -23,12 +23,14 @@
  }
  /** icon links color **/
  .fa {
-     color: #f06151;
+     color: #0061cf;
  }
-
+ .link {
+     color: #333333;
+ }
 /** color of company name, school name, and project name headers */
  h4 {
-     font-color: #f06151;
+     font-color: #0061cf;
  }
 
  /** adds shadow to boxes **/
