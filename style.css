@@ -2,14 +2,21 @@
      margin: 0px;
      background-color: #e8e8e8;
  }
- #company-name {
+ .job-name {
+     color: #333333;
+ }
+ .company-name {
      color: #0061cf;
  }
- #project-name {
+ .project-name {
      color: #0061cf;
  }
- #school-name {
+ .school-name {
      color: #0061cf;
+ }
+ .description {
+     font-style: italic;
+     color: #333333;
  }
  .date {
      color: #333333;
