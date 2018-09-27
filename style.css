@@ -29,8 +29,11 @@
    height: 100%;
  }
  .photo {
-     width: 40%;
-     height: 40%;
+     width: 30%;
+     height: 30%;
+ }
+ .side {
+     transform: rotate(-90deg);
  }
  /** icon links color **/
  .fa {
