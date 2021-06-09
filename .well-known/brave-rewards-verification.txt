@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: kenney.dev
+Token: 20f9180ff9e558ed151193fd9bbba6f020fdbc4d1d25dc650b686a2b6f796709
