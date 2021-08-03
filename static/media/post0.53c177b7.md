@@ -17,7 +17,7 @@ sudo fc-cache -vf
 
 worked to have them show up in Terminal profile font selection and VSCode.
 
-## TL;DR
+**TL;DR**
 
 * Download [Ligalex Mono](https://github.com/ToxicFrog/Ligaturizer/releases)
 * Create `.conf` file [like this](https://github.com/tonsky/FiraCode/issues/840#issuecomment-531471498)
