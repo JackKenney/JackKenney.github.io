@@ -19,7 +19,7 @@ worked to have them show up in Terminal profile font selection and VSCode.
 
 **TL;DR**
 
-* Download [Ligalex Mono](https://github.com/ToxicFrog/Ligaturizer/releases)
+* Download [Ligalex Mono](https://github.com/ToxicFrog/Ligaturizer/releases) or just [IBM Plex](https://github.com/IBM/plex/releases) if you don't care about ligatures
 * Create `.conf` file [like this](https://github.com/tonsky/FiraCode/issues/840#issuecomment-531471498)
 * Run `sudo fc-cache -vf`
 * Use wherever!
