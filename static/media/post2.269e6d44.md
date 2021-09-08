@@ -25,7 +25,7 @@ Type=Application
 Categories=Utility;Application;
 ```
 
-place this in `~/.local/share/applications/` so Gnome can find it.
+place this in `~/.local/share/applications/` so Gnome can find it. [Source](https://vinayak.io/2021/02/09/how-to-create-a-desktop-entry-for-an-appimage/)
 
 ## Assets
 
