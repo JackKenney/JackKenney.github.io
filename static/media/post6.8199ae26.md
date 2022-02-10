@@ -11,4 +11,3 @@ find *<pattern>.<extension> | sort -n -k1.<start of the number in the filename>
 ```
 
 [source](https://stackoverflow.com/a/13361153/13989862)
-
