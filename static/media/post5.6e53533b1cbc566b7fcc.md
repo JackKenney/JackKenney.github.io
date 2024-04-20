@@ -1,4 +1,5 @@
 2021.11.12
+
 # Hibernation on Linux
 
 Hibernation can be tricky to set up for laptops, but it is a great way to save power when the computer is not in use. The high level is that it saves the system state to disk and then completely shuts down the computer. This is opposed to just shallow suspend, or suspending into RAM and leaving power flowing through the RAM. These S1 and S2 suspends, respectively, are quicker to start back up and also preserve the state of the system exactly. Unfortunately, they consume a lot and a little power, respectively so it's worth setting up hibernate if you want to just close your laptop for hours at a time and come back to your session.

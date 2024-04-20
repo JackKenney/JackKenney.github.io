@@ -1,3 +1,5 @@
+2021.09.08
+
 # Dell XPS 13 9360 Boot Issues
 
 Not strictly a Linux issue, but does affect linux booting, so I'll put it here just for record purposes.

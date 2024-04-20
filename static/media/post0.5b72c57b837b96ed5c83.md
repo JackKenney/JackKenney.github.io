@@ -1,3 +1,5 @@
+2021.08.04
+
 # Hello!
 
 Welcome to my linux blog! I found that I keep re-searching things over and over again, 

@@ -1,3 +1,5 @@
+2021.08.04
+
 # Custom Fonts in Ubuntu 20.04
 
 Adding custom fonts and using them in various programs can be tricky in Ubuntu as of 2021, so here's a quick resource set to smooth things out:

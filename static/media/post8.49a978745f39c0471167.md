@@ -1,3 +1,5 @@
+2023.03.17 
+
 # Customizing Mac Terminals
 
 Many employers, including my current one, provide Apple computers to work with.
