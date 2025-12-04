@@ -6,7 +6,6 @@ This guy has all the answers so I'm going to save them for posterity.
 
 https://alexlubbock.com/bootable-windows-usb-on-mac
 
-
 ## Prepare flash drive
 
 Plug in your USB
@@ -77,6 +76,5 @@ title
 
 > Simply eject the WINDOWS10 volume by clicking on the eject symbol in Finder, and remove the USB drive. It's now ready to use as a bootable installation disk.
 > Finally, if the USB drive won't boot, you may need to enable "legacy boot support" in your BIOS, if you have such an option.
-
 
 Thank you Alex Lubbock!

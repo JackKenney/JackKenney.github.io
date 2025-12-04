@@ -2,7 +2,7 @@
 
 # Unity on Ubuntu
 
-There are a few tricky things about installing Unity on Ubuntu. 
+There are a few tricky things about installing Unity on Ubuntu.
 
 [Unity Download](https://unity3d.com/get-unity/download)
 

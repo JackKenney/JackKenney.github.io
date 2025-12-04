@@ -17,10 +17,10 @@ You can change that in the BIOS.
 
 ## Updating Drivers and Firmware
 
-To install the drivers boot into windows on the computer and go to [Dell Support](https://www.dell.com/support/home/en-us) 
+To install the drivers boot into windows on the computer and go to [Dell Support](https://www.dell.com/support/home/en-us)
 and search for the "Service Tag".
 
-Service Tags can be found on the bottom of the laptop, or by running 
+Service Tags can be found on the bottom of the laptop, or by running
 
 ```cmd
 wmic bios get serial number

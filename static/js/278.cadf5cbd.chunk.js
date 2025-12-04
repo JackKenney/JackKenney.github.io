@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkpersonal_website=self.webpackChunkpersonal_website||[]).push([[278],{9278:(e,s,a)=>{e.exports=a.p+"static/media/post2.bbfc30335d85297a517a.md"}}]);

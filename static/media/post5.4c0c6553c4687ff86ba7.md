@@ -50,7 +50,7 @@ Now that we've added the new resume kernel parameter, we need to regenerate our 
 
 ## Initramfs
 
-Now we have to configure `initramfs` to load in the resumed files when the computer boots back up. We want this to happen early on in the user setup, but not too early, so we will add `resume` to the `HOOKS` declation in `/etc/mkinitcpio.conf`. 
+Now we have to configure `initramfs` to load in the resumed files when the computer boots back up. We want this to happen early on in the user setup, but not too early, so we will add `resume` to the `HOOKS` declation in `/etc/mkinitcpio.conf`.
 
 Steps outlined [here](https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Configure_the_initramfs)
 
